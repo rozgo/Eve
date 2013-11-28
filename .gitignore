@@ -1,0 +1,38 @@
+Library/
+Temp/
+Build/
+bowPC_Data/
+obj/
+bowPC.exe
+*.suo
+*.user
+*.pidb
+*.userprefs
+*.pidb
+*.csproj
+*.unityproj
+*.sln
+
+
+# Xcode
+.DS_Store
+iOSBuild/
+
+Assets/UnityVS.meta
+Assets/UnityVS/Editor.meta
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll.meta
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll
+Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll.meta
+Assets/Plugins/CoherentUINet.pdb.meta
+Assets/Plugins/CoherentUI_Native.pdb.meta
+UnityVS.prototype.sln.DotSettings
+
+Assets/StreamingAssets/Defaults
+
+# WebUI
+sourceWebUI/node_modules/
+.idea/
+
+# ABTest file for upload to Swrve
+ABTestFile.txt
