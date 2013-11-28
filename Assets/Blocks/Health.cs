@@ -3,8 +3,6 @@ using System.Collections;
 
 namespace Blocks {
 
-public class Health : Block {
-
-}
-	
+    public class Health : Block {
+    }
 }

@@ -3,8 +3,6 @@ using System.Collections;
 
 namespace Blocks {
 
-public class Display : Block {
-
-}
-	
+    public class Display : Block {
+    }
 }

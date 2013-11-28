@@ -2,8 +2,5 @@
 using System.Collections;
 
 public class ShadersCompilation : MonoBehaviour {
-
-
-  public Shader[] shaders;
-
+    public Shader[] shaders;
 }

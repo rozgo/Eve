@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PolicySet name="OpenSpace">
+  <TextStylePolicy inheritsSet="Mono" inheritsScope="text/plain" scope="text/plain" />
+  <VersionControlPolicy inheritsSet="Mono" />
+  <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp">
+    <IndentSwitchBody>True</IndentSwitchBody>
+    <NamespaceBraceStyle>EndOfLine</NamespaceBraceStyle>
+    <ClassBraceStyle>EndOfLine</ClassBraceStyle>
+    <InterfaceBraceStyle>EndOfLine</InterfaceBraceStyle>
+    <StructBraceStyle>EndOfLine</StructBraceStyle>
+    <EnumBraceStyle>EndOfLine</EnumBraceStyle>
+    <MethodBraceStyle>EndOfLine</MethodBraceStyle>
+    <ConstructorBraceStyle>EndOfLine</ConstructorBraceStyle>
+    <DestructorBraceStyle>EndOfLine</DestructorBraceStyle>
+    <IfElseBraceForcement>AddBraces</IfElseBraceForcement>
+    <ForBraceForcement>AddBraces</ForBraceForcement>
+    <WhileBraceForcement>AddBraces</WhileBraceForcement>
+    <UsingBraceForcement>AddBraces</UsingBraceForcement>
+    <FixedBraceForcement>AddBraces</FixedBraceForcement>
+    <PlaceElseOnNewLine>True</PlaceElseOnNewLine>
+    <PlaceCatchOnNewLine>True</PlaceCatchOnNewLine>
+    <PlaceFinallyOnNewLine>True</PlaceFinallyOnNewLine>
+    <PlaceWhileOnNewLine>True</PlaceWhileOnNewLine>
+    <WithinMethodDeclarationParentheses>True</WithinMethodDeclarationParentheses>
+    <BeforeMethodCallParentheses>False</BeforeMethodCallParentheses>
+    <WithinMethodCallParentheses>True</WithinMethodCallParentheses>
+    <WithinConstructorDeclarationParentheses>True</WithinConstructorDeclarationParentheses>
+    <WithinIndexerDeclarationBracket>True</WithinIndexerDeclarationBracket>
+    <WithinDelegateDeclarationParentheses>True</WithinDelegateDeclarationParentheses>
+    <NewParentheses>False</NewParentheses>
+    <WithinParentheses>True</WithinParentheses>
+    <WithinIfParentheses>True</WithinIfParentheses>
+    <WithinWhileParentheses>True</WithinWhileParentheses>
+    <WithinForParentheses>True</WithinForParentheses>
+    <WithinForEachParentheses>True</WithinForEachParentheses>
+    <WithinCatchParentheses>True</WithinCatchParentheses>
+    <WithinSwitchParentheses>True</WithinSwitchParentheses>
+    <WithinLockParentheses>True</WithinLockParentheses>
+    <WithinUsingParentheses>True</WithinUsingParentheses>
+    <WithinCastParentheses>True</WithinCastParentheses>
+    <WithinSizeOfParentheses>True</WithinSizeOfParentheses>
+    <WithinTypeOfParentheses>True</WithinTypeOfParentheses>
+    <WithinNewParentheses>True</WithinNewParentheses>
+    <SpacesWithinBrackets>True</SpacesWithinBrackets>
+    <SpacesBeforeBrackets>False</SpacesBeforeBrackets>
+    <BlankLinesBeforeFirstDeclaration>1</BlankLinesBeforeFirstDeclaration>
+    <BlankLinesBetweenEventFields>1</BlankLinesBetweenEventFields>
+  </CSharpFormattingPolicy>
+  <ChangeLogPolicy inheritsSet="Mono" />
+  <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp">
+    <FileWidth>120</FileWidth>
+    <NoTabsAfterNonTabs>True</NoTabsAfterNonTabs>
+    <RemoveTrailingWhitespace>True</RemoveTrailingWhitespace>
+    <EolMarker>Unix</EolMarker>
+  </TextStylePolicy>
+</PolicySet>

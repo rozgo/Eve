@@ -2,6 +2,6 @@
 using System.Collections;
 
 public class GradientHolder : MonoBehaviour {
-  public int index;
-  public Gradient ambientGradient;
+    public int index;
+    public Gradient ambientGradient;
 }
