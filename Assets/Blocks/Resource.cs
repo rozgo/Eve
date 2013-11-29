@@ -17,16 +17,14 @@ namespace Blocks {
         }
 
         public void Start () {
-            //Debug.Log("Resource" + this.GetHashCode());
-            //Debug.Log( rate.Get() );
         }
 
         public float Produce ( float elapsedTime ) {
-            var delta = elapsedTime * rate.Get();
-            amount.Set( amount.Get() + delta );
+            var delta = elapsedTime * rate.Get<float>();
+            amount.Set( amount.Get<int>() + delta );
             return delta;
         }
-
+        
         IEnumerator Producing () {
             while ( true ) {
                 Produce( 3 );

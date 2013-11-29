@@ -9,6 +9,9 @@ namespace Blocks {
         public Field.Number xPos;
         public Field.Number yPos;
 
+        public int width;
+        public int length;
+
         public Level level;
         public string prefab;
 
@@ -21,7 +24,6 @@ namespace Blocks {
         public override void OnSetup () {
             base.OnSetup();
             level = GetComponent<Level>();
-            prefab = (string)(((List<object>)definition["Prefab"])[(int)level.level.Get()]);
         }
 
         public virtual void OnWillMoveTo ( int x, int y ) {

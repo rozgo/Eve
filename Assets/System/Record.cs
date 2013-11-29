@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
+//[System.Serializable]
 public class Record {
 
     public Table table;
@@ -21,7 +21,7 @@ public class Record {
     }
 }
 
-[System.Serializable]
+//[System.Serializable]
 public class Table {
 
     static Dictionary<string, Table> tables = new Dictionary<string, Table>();
@@ -74,8 +74,8 @@ public class Field {
             OnDidSet();
         }
 
-        public float Get () {
-            return value;
+        public T Get<T> () {
+            return (T)System.Convert.ChangeType( value, typeof( T ) );
         }
 
         public override string Encode () {
