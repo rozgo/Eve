@@ -8,8 +8,6 @@ public class Main : MonoBehaviour
   {
     gameStateMachine = new GameStateMachine();
     Object.DontDestroyOnLoad(gameObject);
-    Instantiator.Instantiate("Common/SharedShaders", "Environment", null, null);
-    Instantiator.Instantiate("HomeScene/Environment", "Environment", null, null);
     yield return StartCoroutine(Definitions.Get().LoadDefinitions());
     yield return StartCoroutine(LoadBlocks("http://dl.dropboxusercontent.com/u/10592653/eve/UnitTestBlocks.json"));
   }

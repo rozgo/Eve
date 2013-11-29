@@ -154,8 +154,7 @@ public class HomeLoadEnvironmentState : IState
 
   public void Enter (StateArgs stateArgs)
   {
-
-        Instantiator.Instantiate( "Common/SharedShaders", "Shaders", null, null );
+    Instantiator.Instantiate( "Common/SharedShaders", "Shaders", null, null );
     homeSceneStateMachine.environment = Instantiator.Instantiate( "HomeScene/Environment", "Environment", null, null ) as GameObject;
     homeSceneStateMachine.environment.GetComponentInChildren<ShadowGenerator> ().shadowCamera.enabled = false;
     homeSceneStateMachine.environment.GetComponentInChildren<ShadowGenerator> ().enabled = false;
