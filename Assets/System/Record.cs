@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Record {
+
     public Table table;
     public string id = string.Empty;
     public List<Field> fields = new List<Field>();
+
+    public Record () {
+    }
 
     public T Add<T> ( string name ) where T : Field, new() {
         var field = new T();
@@ -19,6 +23,7 @@ public class Record {
 
 [System.Serializable]
 public class Table {
+
     static Dictionary<string, Table> tables = new Dictionary<string, Table>();
 
     public static Table Get ( string name ) {
@@ -34,11 +39,12 @@ public class Table {
 
     public string name = string.Empty;
     public List<string> columns = new List<string>();
-    public SortedList<string,Record> records = new SortedList<string,Record>();
+    public Dictionary<string,Record> records = new Dictionary<string,Record>();
 }
 
 [System.Serializable]
 public class Field {
+
     public string name = string.Empty;
     public string DebugValue = string.Empty;
 
@@ -46,15 +52,21 @@ public class Field {
         return DebugValue;
     }
 
+    public virtual void Decode ( object obj ) {
+        //DebugValue = obj.ToString();
+    }
+
     public Record record;
     public System.Action OnDidSet;
 
     public Field () {
         OnDidSet = () => DebugValue = Encode();
+        //OnDidSet = () => {};
     }
 
     [System.Serializable]
     public class Number : Field {
+
         float value = 0;
 
         public void Set ( float value ) {
@@ -67,12 +79,21 @@ public class Field {
         }
 
         public override string Encode () {
-            return value.ToString( "0.0000" );
+            //return value.ToString( "0.0000" );
+            return value.ToString();
+        }
+
+        public override void Decode ( object obj ) {
+            Dynamic.ForValue<float>( obj, value => {
+                Set( value );
+                //DebugValue = obj.ToString();
+            } );
         }
     }
 
     [System.Serializable]
     public class String : Field {
+
         string value = string.Empty;
 
         public void Set ( string value ) {
@@ -86,6 +107,42 @@ public class Field {
 
         public override string Encode () {
             return value;
+        }
+
+        public override void Decode ( object obj ) {
+            Dynamic.For<string>( obj, value => {
+                Set( value );
+            } );
+        }
+    }
+}
+
+class Dynamic {
+
+    public static bool IsNumber ( object value ) {
+        return value is sbyte
+                || value is byte
+                || value is short
+                || value is ushort
+                || value is int
+                || value is uint
+                || value is long
+                || value is ulong
+                || value is float
+                || value is double
+                || value is decimal;
+    }
+
+    public static void ForValue<T> ( object value, System.Action<T> action ) where T : struct {
+        if ( IsNumber( value ) ) {
+            action( (T)System.Convert.ChangeType( value, typeof( T ) ) );
+        }
+    }
+
+    public static void For<T> ( object value, System.Action<T> action ) where T : class {
+        T v = value as T;
+        if ( v != null ) {
+            action( v );
         }
     }
 }

@@ -4,30 +4,27 @@ using System.Collections;
 namespace Blocks {
 
     public class Resource : Block {
-        Field.String product;
-        Field.Number amount;
-        Field.Number rate;
+    	
+        public Field.String product;
+        public Field.Number amount;
+        public Field.Number rate;
 
-        public float Produce ( float elapsedTime ) {
-            var delta = elapsedTime * rate.Get();
-            amount.Set( amount.Get() + delta );
-            return delta;
-        }
-
-        public override void OnSetup () {
-            base.OnSetup();
+        public override void OnDataBind () {
+            base.OnDataBind();
             product = record.Add<Field.String>( "product" );
             amount = record.Add<Field.Number>( "amount" );
             rate = record.Add<Field.Number>( "rate" );
         }
 
-        public override void OnStart () {
-            base.OnStart();
-            StartCoroutine( Producing() );
+        public void Start () {
+            //Debug.Log("Resource" + this.GetHashCode());
+            //Debug.Log( rate.Get() );
         }
 
-        public override void OnUpdate () {
-            base.OnUpdate();
+        public float Produce ( float elapsedTime ) {
+            var delta = elapsedTime * rate.Get();
+            amount.Set( amount.Get() + delta );
+            return delta;
         }
 
         IEnumerator Producing () {
