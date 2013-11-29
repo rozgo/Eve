@@ -82,9 +82,19 @@ public class Definitions : MonoBehaviour {
 
 public class Def {
 
-	public static IEnumerable<T> Values< T > ( string defName, string defKey ) {
+	Dictionary<string,object> defsByName;
+
+	public Def () {
+		defsByName = Definitions.Get().defsByName;
+	}
+
+	public Def ( Dictionary<string,object> defs ) {
+		defsByName = defs;
+	}
+
+	public IEnumerable<T> Values< T > ( string defName, string defKey ) {
 		try {
-			var def = ( Dictionary<string,object> )( Definitions.Get().defsByName[defName] );
+			var def = ( Dictionary<string,object> )( defsByName[defName] );
 			var objects = ( ( List<object> )( def[defKey] ) );
 			var values = objects.Select( obj => (T)System.Convert.ChangeType( obj, typeof( T ) ) );
 			values.FirstOrDefault();
@@ -97,9 +107,9 @@ public class Def {
 		return new List<T>();
 	}
 
-	public static T Value< T > ( string defName, string defKey, T defValue ) {
+	public T Value< T > ( string defName, string defKey, T defValue ) {
 		try {
-			var def = ( Dictionary<string,object> )( Definitions.Get().defsByName[defName] );
+			var def = ( Dictionary<string,object> )( defsByName[defName] );
 			var value = (T)System.Convert.ChangeType( def[defKey], typeof( T ) );;
 			return value;
 		}
