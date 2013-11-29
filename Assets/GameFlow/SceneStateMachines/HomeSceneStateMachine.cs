@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Blocks;
@@ -73,16 +73,12 @@ public class HomeLoadState : IState {
 
     public void Enter ( StateArgs stateArgs ) {
 
-        NavigationSystem.Get();
-
-        Definitions.Get().StartCoroutine( Definitions.Get().LoadMission( "Normandy, Alaska", () => {
-            homeSceneStateMachine.ChangeState ( ( int )HomeSceneStateMachine.HomeSceneStates.LoadEnvironment, new StateArgs () );
-        } ) );
+        
 
     }
 
     public void Update ( float deltaTime ) {
-
+    homeSceneStateMachine.ChangeState ( ( int )HomeSceneStateMachine.HomeSceneStates.LoadEnvironment, new StateArgs () );
     }
 
     public void Exit () {
@@ -138,32 +134,12 @@ public class HomeLoadStructuresState : IState {
     }
 
     public void Enter ( StateArgs stateArgs ) {
-        //Buildings/NuclearPowerPlant_L5
-        //Buildings/Wall_L1
 
+    NavigationSystem.Get();
 
-        //    homeSceneStateMachine.navigationSystem.UpdateGameModelPosition (pos, pos, buildingPathfindingNode);
-        //    for(int i = 0;i<40;i++){
-        //      for (int j = 0; j < 40; j++) {
-        //        var pos = SpaceConversion.GetWorldPositionFromMapTile (i,j);
-        //
-        //
-        //        var building = Instantiator.Instantiate ("Buildings/Wall_L1","wall",null,null,null);
-        //        var buildingPathfindingNode = building.AddComponent<PathFindingNode> ();
-        //        buildingPathfindingNode.Length = 3;
-        //        buildingPathfindingNode.Width = 3;
-        //        building.transform.position = pos;
-        //        building.AddComponent<Structure> ();
-        //        buildingPathfindingNode.Position = pos;
-        //
-        //        homeSceneStateMachine.navigationSystem.AddGameModel (buildingPathfindingNode);
-        //
-        //        homeSceneStateMachine.navigationSystem.UpdateGameModelPosition (pos, pos, buildingPathfindingNode);
-        //
-        //
-        //
-        //      }
-        //    }
+    Definitions.Get().StartCoroutine( Definitions.Get().LoadMission( "Normandy, Alaska", () => {
+      homeSceneStateMachine.ChangeState ( ( int )HomeSceneStateMachine.HomeSceneStates.LoadUnits, new StateArgs () );
+    } ) );
 
 
 
@@ -172,7 +148,7 @@ public class HomeLoadStructuresState : IState {
     }
 
     public void Update ( float deltaTime ) {
-        homeSceneStateMachine.ChangeState ( ( int )HomeSceneStateMachine.HomeSceneStates.LoadUnits, new StateArgs () );
+        
     }
 
     public void Exit () {
