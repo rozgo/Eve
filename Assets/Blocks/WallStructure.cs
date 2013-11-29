@@ -14,14 +14,16 @@ namespace Blocks {
         public override void OnSetup () {
             base.OnSetup();
 
-            width = Def.Value<int>( "Wall", "Width", 1 );
-            length = Def.Value<int>( "Wall", "Length", 1 );
+            var def = new Def();
 
-            //foreach (var cost in Def.Values<int>( "Wall", "Cost" ) ) {
+            width = def.Value<int>( "Wall", "Width", 1 );
+            length = def.Value<int>( "Wall", "Length", 1 );
+
+            //foreach (var cost in def.Values<int>( "Wall", "Cost" ) ) {
             //	Debug.Log( cost );
             //}
 
-            prefab = Def.Values<string>( "Wall", "Prefab" ).ElementAt( level.level.Get<int>() );
+            prefab = def.Values<string>( "Wall", "Prefab" ).ElementAt( level.level.Get<int>() );
             //Debug.Log( prefab );
         }
 
