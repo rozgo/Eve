@@ -117,30 +117,32 @@ public class Definitions : MonoBehaviour {
 
         var missionDef  = ( Dictionary<string, object> )defsByName[mission];
 
-        var wallsPath = missionDef["WallInstancePath"] as string;
+        var instancePath = missionDef["WallInstancePath"] as string;
         //Debug.Log( wallsPath );
 
         string baseUrl = "http://dl.dropboxusercontent.com/u/10592653/eve";
 
-        yield return StartCoroutine( Requestor.ForJSON( baseUrl + "/" + wallsPath + ".json", ( json ) => {
+        yield return StartCoroutine( Requestor.ForJSON( baseUrl + "/" + instancePath + ".json", ( json ) => {
 
-            var wallDefs = MiniJSON.Json.Deserialize( json );
-            foreach ( Dictionary<string, object> wallDef in ( List<object> )wallDefs ) {
-                Debug.Log( Def.Value<int>( wallDef["Level"], 0 ) );
+            var defs = MiniJSON.Json.Deserialize( json );
+            foreach ( Dictionary<string, object> def in ( List<object> )defs ) {
+                Debug.Log( Def.Value<int>( def["Level"], 0 ) );
 
-                var wallObject = new GameObject( Def.Value<string>( wallDef["InstanceId"], "BadInstance" ) );
-                var healthBlock = wallObject.AddComponent<Blocks.Health>();
+                var entityObject = new GameObject( Def.Value<string>( def["InstanceId"], "BadInstance" ) );
+                var healthBlock = entityObject.AddComponent<Blocks.Health>();
                 healthBlock.OnDataBind();
-                var levelBlock = wallObject.AddComponent<Blocks.Level>();
+                var levelBlock = entityObject.AddComponent<Blocks.Level>();
                 levelBlock.OnDataBind();
-                var wallBlock = wallObject.AddComponent<Blocks.WallStructure>();
+                var wallBlock = entityObject.AddComponent<Blocks.WallStructure>();
                 wallBlock.OnDataBind();
 
-                wallBlock.xPos.Set( Def.Value<int>( wallDef["X"], 0 ) );
-                wallBlock.yPos.Set( Def.Value<int>( wallDef["Y"], 0 ) );
-                wallBlock.zPos.Set( Def.Value<int>( wallDef["Z"], 0 ) );
+                wallBlock.xPos.Set( Def.Value<int>( def["X"], 0 ) );
+                wallBlock.yPos.Set( Def.Value<int>( def["Y"], 0 ) );
+                wallBlock.zPos.Set( Def.Value<int>( def["Z"], 0 ) );
 
-                levelBlock.level.Set( Def.Value<int>( wallDef["Level"], 1 ) );
+                wallBlock.typeId.Set( Def.Value<int>( def["TypeId"], 0 ) );
+
+                levelBlock.level.Set( Def.Value<int>( def["Level"], 1 ) );
 
                 healthBlock.OnSetup();
                 levelBlock.OnSetup();
@@ -150,6 +152,42 @@ public class Definitions : MonoBehaviour {
             }
 
         } ) );
+
+        instancePath = missionDef["BuildingInstancePath"] as string;
+
+        yield return StartCoroutine( Requestor.ForJSON( baseUrl + "/" + instancePath + ".json", ( json ) => {
+
+            var defs = MiniJSON.Json.Deserialize( json );
+            foreach ( Dictionary<string, object> def in ( List<object> )defs ) {
+                Debug.Log( Def.Value<int>( def["Level"], 0 ) );
+
+                var entityObject = new GameObject( Def.Value<string>( def["InstanceId"], "BadInstance" ) );
+                var healthBlock = entityObject.AddComponent<Blocks.Health>();
+                healthBlock.OnDataBind();
+                var levelBlock = entityObject.AddComponent<Blocks.Level>();
+                levelBlock.OnDataBind();
+
+                var buildingBlock = entityObject.AddComponent<Blocks.BuildingStructure>();
+                buildingBlock.OnDataBind();
+
+                buildingBlock.xPos.Set( Def.Value<int>( def["X"], 0 ) );
+                buildingBlock.yPos.Set( Def.Value<int>( def["Y"], 0 ) );
+                buildingBlock.zPos.Set( Def.Value<int>( def["Z"], 0 ) );
+
+                buildingBlock.typeId.Set( Def.Value<int>( def["TypeId"], 0 ) );
+
+                levelBlock.level.Set( Def.Value<int>( def["Level"], 1 ) );
+
+                healthBlock.OnSetup();
+                levelBlock.OnSetup();
+                buildingBlock.OnSetup();
+
+                buildingBlock.OnLoad();
+            }
+
+        } ) );
+
+
 
         onDone();
     }

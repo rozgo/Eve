@@ -10,6 +10,8 @@ public class Structure : Block {
     public Field.Number yPos;
     public Field.Number zPos;
 
+    public Field.Number typeId;
+
     public int width;
     public int length;
 
@@ -18,9 +20,10 @@ public class Structure : Block {
 
     public override void OnDataBind () {
         base.OnDataBind();
-        xPos = record.Add<Field.Number>( "x" );
-        yPos = record.Add<Field.Number>( "y" );
-        zPos = record.Add<Field.Number>( "z" );
+        xPos = record.Add<Field.Number>( "X" );
+        yPos = record.Add<Field.Number>( "Y" );
+        zPos = record.Add<Field.Number>( "Z" );
+        typeId = record.Add<Field.Number>( "TypeId" );
         Debug.Log( "Structure OnDataBind" );
     }
 
@@ -34,18 +37,19 @@ public class Structure : Block {
         Debug.Log( "OnLoad" );
         Debug.Log( prefab );
 
+
         var building = Instantiator.Instantiate ( prefab, "nuclear stuff", null, transform, null );
 
         var buildingPathfindingNode = gameObject.AddComponent<PathFindingNode>();
-        buildingPathfindingNode.Width = 1;
-        buildingPathfindingNode.Length = 1;
+        buildingPathfindingNode.Width = ( uint )width;
+        buildingPathfindingNode.Length = ( uint )length;
 
         Debug.Log( xPos.Get<float>() );
 
         var pos = new Vector3( xPos.Get<float>(), yPos.Get<float>(), zPos.Get<float>() );
         buildingPathfindingNode.Position = pos;
-        transform.position = pos + new Vector3( buildingPathfindingNode.Width * 0.5f * SpaceConversion.MapTileSize,
-                                                0, buildingPathfindingNode.Length * 0.5f * SpaceConversion.MapTileSize );
+        transform.position = pos + new Vector3( width * 0.5f * SpaceConversion.MapTileSize,
+                                                0, length * 0.5f * SpaceConversion.MapTileSize );
         //building.AddComponent<Structure>();
 
         NavigationSystem.Get().AddGameModel( buildingPathfindingNode );
