@@ -6,29 +6,25 @@ using System.Linq;
 namespace Blocks {
 
     public class Block : MonoBehaviour {
-        public bool inspect = false;
+
         public Record record = new Record();
 
-        void Awake () {
-            OnSetup();
-        }
-
-        public virtual void OnSetup () {
+        public virtual void OnDataBind () {
             record.table = Table.Get( this.GetType().ToString() );
         }
 
-        public virtual void OnStart () {
+        public void OnSource ( string id, Dictionary<string,object> source ) {
+            record.id = id;
+            record.table.records[id] = record;
+            foreach ( var field in record.fields ) {
+                object value;
+                if ( source.TryGetValue( field.name, out value ) ) {
+                    field.Decode( value );
+                }
+            }
         }
 
-        public virtual void OnUpdate () {
-        }
-
-        void Start () {
-            OnStart();
-        }
-
-        void Update () {
-            OnUpdate();
+        public virtual void OnSetup () {
         }
 
     }

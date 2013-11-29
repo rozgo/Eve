@@ -120,7 +120,7 @@ class Instantiator : MonoBehaviour {
         if ( localBundle == null ) {
             var defaultPath = Application.streamingAssetsPath + "/Defaults";
             defaultPath = defaultPath + "/" + assetHash + ".unity3d";
-            Debug.Log( "AssetBundle.CreateFromFile: " + defaultPath );
+//            Debug.Log( "AssetBundle.CreateFromFile: " + defaultPath );
             localBundle = AssetBundle.CreateFromFile( defaultPath );
         }
         return localBundle;
