@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Blocks {
 
@@ -30,6 +31,20 @@ public class Structure : Block {
     public override void OnSetup () {
         base.OnSetup();
         level = GetComponent<Level>();
+
+        try {
+
+            var def = ( Dictionary<string, object> )Definitions.Get().defsById[typeId.Get<int>()];
+
+            width = ( int )System.Convert.ChangeType( def["Width"], typeof( int ) );
+            length = ( int )System.Convert.ChangeType( def["Length"], typeof( int ) );
+
+            var prefabs = ( ( List<object> )def["Prefab"] ).Cast<string>();
+            prefab = prefabs.ElementAt( level.level.Get<int>() );
+
+        } catch ( System.Exception e ) {
+            Debug.LogError( e );
+        }
     }
 
     public override void OnLoad () {
@@ -37,6 +52,9 @@ public class Structure : Block {
         Debug.Log( "OnLoad" );
         Debug.Log( prefab );
 
+        if ( prefab == null ) {
+            return;
+        }
 
         var building = Instantiator.Instantiate ( prefab, "nuclear stuff", null, transform, null );
 
@@ -50,7 +68,6 @@ public class Structure : Block {
         buildingPathfindingNode.Position = pos;
         transform.position = pos + new Vector3( width * 0.5f * SpaceConversion.MapTileSize,
                                                 0, length * 0.5f * SpaceConversion.MapTileSize );
-        //building.AddComponent<Structure>();
 
         NavigationSystem.Get().AddGameModel( buildingPathfindingNode );
     }

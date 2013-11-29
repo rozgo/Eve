@@ -33,6 +33,7 @@ public class Definitions : MonoBehaviour {
         foreach ( var defFile in defFiles ) {
             yield return StartCoroutine( Requestor.ForJSON( path + "/" + defFile + ".json", ( json ) => {
                 try {
+                    Debug.Log( path + "/" + defFile + ".json" );
                     var defs = ( List<object> )MiniJSON.Json.Deserialize( json );
                     foreach ( Dictionary<string, object> def in defs ) {
                         var defName = def["NameInternal"] as string;
@@ -55,6 +56,7 @@ public class Definitions : MonoBehaviour {
     }
 
     string[] defFiles = {
+        //"StructureDefinitions",
         //"AdsConfiguration",
         //"AmmoDefinitions",
         //"AnimationSetDefinitions",
@@ -63,7 +65,7 @@ public class Definitions : MonoBehaviour {
         //"CameraCustomizationConfig",
         //"CameraOrthoConfig",
         //"CameraPerspectiveConfig",
-        //"DefenseBuildingDefinitions",
+        "DefenseBuildingDefinitions",
         //"HeroDefinitions",
         //"HeroSlotDefinitions",
         //"HeroTree",
