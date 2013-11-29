@@ -45,8 +45,9 @@ public class NavigationSystem {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void DebugDraw () {
-        //m_clearanceMap.DebugDraw();
-        //m_costMap.DebugDraw();
+    Debug.Log ("se esta llamando eso ");
+        m_clearanceMap.DebugDraw();
+        m_costMap.DebugDraw();
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void Destroy () {
@@ -127,10 +128,9 @@ public class NavigationSystem {
     public void UpdateGameModelPosition ( Vector3 previous, Vector3 current, PathFindingNode node ) {
         int prevX, prevZ;
         SpaceConversion.GetMapTileFromWorldPosition( previous, out prevX, out prevZ );
-
         int x, z;
         SpaceConversion.GetMapTileFromWorldPosition( current, out x, out z );
-
+    Debug.Log (x + " "+ z);
         m_clearanceMap.UpdateGameModel( prevX, prevZ, x, z, node );
 
         var trap = node.GetComponent<Trap>();

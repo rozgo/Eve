@@ -71,21 +71,19 @@ public class CostMap {
         float duration = 0.1f;
 
         for ( int i = 0; i <= SpaceConversion.MapTiles; i++ ) {
-            for ( int j = 0; j <= SpaceConversion.MapTiles; j++ ) {
-                Vector3 worldPos = SpaceConversion.GetWorldPositionFromMapTile( i, j );
+      for (int j = 0; j <= SpaceConversion.MapTiles; j++) {
+        Vector3 worldPos = SpaceConversion.GetWorldPositionFromMapTile (i, j);
 
-//        if ((DebugConsole.debugChannelMask & (int)DebugChannel.AI) != 0)
-//        {
-//          Debug.DrawLine(worldPos, worldPos + Vector3.forward * scale, m_annotatedNodes[i, j].GameModels[TileNeighbor.North] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos + Vector3.forward * diag + Vector3.right * diag, m_annotatedNodes[i, j].GameModels[TileNeighbor.NorthEast] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos + Vector3.right * scale, m_annotatedNodes[i, j].GameModels[TileNeighbor.East] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos - Vector3.forward * diag + Vector3.right * diag, m_annotatedNodes[i, j].GameModels[TileNeighbor.SouthEast] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos - Vector3.forward * scale, m_annotatedNodes[i, j].GameModels[TileNeighbor.South] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos - Vector3.forward * diag - Vector3.right * diag, m_annotatedNodes[i, j].GameModels[TileNeighbor.SouthWest] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos - Vector3.right * scale, m_annotatedNodes[i, j].GameModels[TileNeighbor.West] == null ? Color.white : Color.black, duration);
-//          Debug.DrawLine(worldPos, worldPos + Vector3.forward * diag - Vector3.right * diag, m_annotatedNodes[i, j].GameModels[TileNeighbor.NorthWest] == null ? Color.white : Color.black, duration);
-//        }
-            }
+
+        Debug.DrawLine (worldPos, worldPos + Vector3.forward * scale, m_annotatedNodes [i, j].GameModels [TileNeighbor.North] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos + Vector3.forward * diag + Vector3.right * diag, m_annotatedNodes [i, j].GameModels [TileNeighbor.NorthEast] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos + Vector3.right * scale, m_annotatedNodes [i, j].GameModels [TileNeighbor.East] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos - Vector3.forward * diag + Vector3.right * diag, m_annotatedNodes [i, j].GameModels [TileNeighbor.SouthEast] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos - Vector3.forward * scale, m_annotatedNodes [i, j].GameModels [TileNeighbor.South] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos - Vector3.forward * diag - Vector3.right * diag, m_annotatedNodes [i, j].GameModels [TileNeighbor.SouthWest] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos - Vector3.right * scale, m_annotatedNodes [i, j].GameModels [TileNeighbor.West] == null ? Color.white : Color.black, duration);
+        Debug.DrawLine (worldPos, worldPos + Vector3.forward * diag - Vector3.right * diag, m_annotatedNodes [i, j].GameModels [TileNeighbor.NorthWest] == null ? Color.white : Color.black, duration);
+      }
         }
     }
     //---------------------------------------------------------------------------------------------------------------------

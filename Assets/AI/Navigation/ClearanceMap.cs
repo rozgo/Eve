@@ -214,23 +214,22 @@ public class ClearanceMap {
             Color.white
         };
 
-//    if ((DebugConsole.debugChannelMask & (int)DebugChannel.AI) != 0)
-//    {
-//      for (int i = 0; i < SpaceConversion.MapTiles; i++)
-//      {
-//        for (int j = 0; j < SpaceConversion.MapTiles; j++)
-//        {
-//          Vector3 worldPos = SpaceConversion.GetWorldPositionFromMapTile(i, j);
-//
-//          Debug.DrawLine(worldPos, worldPos + Vector3.up * AnnotatedNodes[i, j].Clearance, cols[AnnotatedNodes[i, j].Clearance], 0.1f);
-//
-//          if (AnnotatedNodes[i, j].BlockingGameModel != null)
-//          {
-//            Debug.DrawLine(worldPos, AnnotatedNodes[i, j].BlockingGameModel.Center, Color.blue, 0.1f);
-//          }
-//        }
-//      }
-//    }
+
+      for (int i = 0; i < SpaceConversion.MapTiles; i++)
+      {
+        for (int j = 0; j < SpaceConversion.MapTiles; j++)
+        {
+          Vector3 worldPos = SpaceConversion.GetWorldPositionFromMapTile(i, j);
+
+          Debug.DrawLine(worldPos, worldPos + Vector3.up * AnnotatedNodes[i, j].Clearance, cols[AnnotatedNodes[i, j].Clearance], 0.1f);
+
+          if (AnnotatedNodes[i, j].BlockingGameModel != null)
+          {
+            Debug.DrawLine(worldPos, AnnotatedNodes[i, j].BlockingGameModel.Center, Color.blue, 0.1f);
+          }
+        }
+      }
+    
     }
     //---------------------------------------------------------------------------------------------------------------------
     private void UpdateClearance ( int x, int z, uint width, uint length ) {

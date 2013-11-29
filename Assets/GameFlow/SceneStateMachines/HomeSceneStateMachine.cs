@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Blocks;
 public class HomeSceneStateMachine : StateMachine {
 
   public enum HomeSceneStates{
@@ -31,6 +32,7 @@ public class HomeSceneStateMachine : StateMachine {
   }
 
   public GameObject environment;
+  public NavigationSystem navigationSystem;
 }
 
 public class HomeInitState : IState
@@ -69,6 +71,7 @@ public class HomeInitState : IState
 
   HomeSceneStateMachine homeSceneStateMachine;
 
+
 }
 
 
@@ -81,6 +84,39 @@ public class HomeLoadState : IState
 
   public void Enter (StateArgs stateArgs)
   {
+
+
+    AnnotatedNode[,] annotatedNodes = new AnnotatedNode[SpaceConversion.MapTiles + 1, SpaceConversion.MapTiles + 1];
+    for (int i = 0; i < SpaceConversion.MapTiles + 1; i++)
+    {
+      for (int j = 0; j < SpaceConversion.MapTiles + 1; j++)
+      {
+        annotatedNodes[i,j] = new AnnotatedNode();
+      }
+    }
+
+
+    UnitTracker unitTracker = new UnitTracker();
+
+    AStar solver = new AStar(annotatedNodes, unitTracker);
+    DirectionalAStar solverDirectional = new DirectionalAStar(annotatedNodes);
+
+    int maxAStarsNodesExploredPerFrame = 500;
+    AStarScheduler aStarScheduler = new AStarScheduler(solver, solverDirectional, maxAStarsNodesExploredPerFrame);
+
+    int [,] baseOutlineStructureIds = new int[SpaceConversion.MapTiles, SpaceConversion.MapTiles];
+    ClearanceMap clearanceMap = new ClearanceMap(annotatedNodes, baseOutlineStructureIds);
+    CostMap costMap = new CostMap(annotatedNodes);
+
+    homeSceneStateMachine.navigationSystem =  new NavigationSystem(
+      clearanceMap,
+      costMap,
+      aStarScheduler, 
+      unitTracker,
+      annotatedNodes,
+      baseOutlineStructureIds);
+  
+
 
   }
 
@@ -158,6 +194,48 @@ public class HomeLoadStructuresState : IState
 
   public void Enter (StateArgs stateArgs)
   {
+    //Buildings/NuclearPowerPlant_L5
+    //Buildings/Wall_L1
+    var building = Instantiator.Instantiate ("Buildings/NuclearPowerPlant_L5","nuclear stuff",null,null,null);
+    var buildingPathfindingNode = building.AddComponent<PathFindingNode> ();
+    buildingPathfindingNode.TileWidth = 3;
+    buildingPathfindingNode.TileLength = 3;
+    buildingPathfindingNode.Width = 1;
+    buildingPathfindingNode.Length = 1;
+
+    var pos = new Vector3(40f,0f,40f);
+    building.transform.position = pos;
+    building.AddComponent<Structure> ();
+    buildingPathfindingNode.Position = pos;
+
+    homeSceneStateMachine.navigationSystem.AddGameModel (buildingPathfindingNode);
+
+    homeSceneStateMachine.navigationSystem.UpdateGameModelPosition (pos, pos, buildingPathfindingNode);
+//    for(int i = 0;i<40;i++){
+//      for (int j = 0; j < 40; j++) {
+//        var pos = SpaceConversion.GetWorldPositionFromMapTile (i,j);
+//
+//
+//        var building = Instantiator.Instantiate ("Buildings/Wall_L1","wall",null,null,null);
+//        var buildingPathfindingNode = building.AddComponent<PathFindingNode> ();
+//        buildingPathfindingNode.Length = 3;
+//        buildingPathfindingNode.Width = 3;
+//        building.transform.position = pos;
+//        building.AddComponent<Structure> ();
+//        buildingPathfindingNode.Position = pos;
+//
+//        homeSceneStateMachine.navigationSystem.AddGameModel (buildingPathfindingNode);
+//
+//        homeSceneStateMachine.navigationSystem.UpdateGameModelPosition (pos, pos, buildingPathfindingNode);
+//
+//
+//
+//      }
+//    }
+
+
+
+
 
   }
 
@@ -305,7 +383,7 @@ public class HomeUpdateStuffState : IState
 {
   public HomeUpdateStuffState (HomeSceneStateMachine homeSceneStateMachine) : base ()
   {
-    //this.homeSceneStateMachine = homeSceneStateMachine;
+    this.homeSceneStateMachine = homeSceneStateMachine;
   }
 
   public void Enter (StateArgs stateArgs)
@@ -316,6 +394,7 @@ public class HomeUpdateStuffState : IState
   public void Update (float deltaTime)
   {
     Debug.Log ("Updating");
+    homeSceneStateMachine.navigationSystem.Update (deltaTime);
   }
 
   public void Exit ()
@@ -333,7 +412,7 @@ public class HomeUpdateStuffState : IState
     return true;
   }
 
-  //HomeSceneStateMachine homeSceneStateMachine;
+  HomeSceneStateMachine homeSceneStateMachine;
 
 }
 

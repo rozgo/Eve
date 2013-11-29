@@ -55,15 +55,24 @@ public class PerspectiveCamera : MonoBehaviour {
 
 */
   
+    #if UNITY_EDITOR
+    eyeCtrl.kp = 16f; 
+    eyeCtrl.ki = 0f; 
+    eyeCtrl.kd = 0f;
+    lookAtLowPassFactor = 5f;
+    eyeLowPassFactor = 10f;
+    zoomDeltaMultiplier = 1f;
+    zoomDeltaLimit = 2f;
 
-        eyeCtrl.kp = 16f; //configurationByPlatform.EyeCtrlKp;
-        eyeCtrl.ki = 0f; //configurationByPlatform.EyeCtrlKi;
-        eyeCtrl.kd = 0f;//configurationByPlatform.EyeCtrlKd;
+    #elif UNITY_IOS
+        eyeCtrl.kp = 16f; 
+        eyeCtrl.ki = 0f; 
+        eyeCtrl.kd = 0f;
         lookAtLowPassFactor = 5f;
         eyeLowPassFactor = 10f;
         zoomDeltaMultiplier = 0.05f;
         zoomDeltaLimit = 100f;
-
+    #endif
         var height = Eye().transform.position.y;
 
         m_lowerFov = m_sceneConfiguration.lowerLimit.fov;
