@@ -5,121 +5,205 @@ using System.Linq;
 
 public class Definitions : MonoBehaviour {
 
-	static Definitions instance;
-	public static Definitions Get () {
-		if ( instance == null ) {
-			var defObj = new GameObject( "Definitions" );
-			defObj.AddComponent<Definitions>();
-			Object.DontDestroyOnLoad( defObj );
-		}
-		return instance;
-	}
+    static Definitions instance;
+    public static Definitions Get () {
+        if ( instance == null ) {
+            var defObj = new GameObject( "Definitions" );
+            defObj.AddComponent<Definitions>();
+            Object.DontDestroyOnLoad( defObj );
+        }
+        return instance;
+    }
 
-	public string path = "http://dl.dropboxusercontent.com/u/10592653/eve/Definitions";
+    public string path = "http://dl.dropboxusercontent.com/u/10592653/eve/Definitions";
 
-	public List<string> loadedDefs = new List<string>();
+    public List<string> loadedDefs = new List<string>();
 
-	public Dictionary<string,object> defsByName = new Dictionary<string,object>();
-	public Dictionary<int,object> defsById = new Dictionary<int,object>();
+    public Dictionary<string, object> defsByName = new Dictionary<string, object>();
+    public Dictionary<int, object> defsById = new Dictionary<int, object>();
 
-	void Awake () {
-		instance = this;
-	}
+    void Awake () {
+        instance = this;
+    }
 
-	void Start () {
-	}
+    void Start () {
+    }
 
-	public IEnumerator LoadDefinitions () {
-		foreach ( var defFile in defFiles ) {
-			yield return StartCoroutine( Requestor.ForJSON( path + "/" + defFile + ".json", ( json ) => {
-				try {
-					var defs = ( List<object> )MiniJSON.Json.Deserialize( json );
-					foreach ( Dictionary<string,object> def in defs ) {
-						var defName = def["NameInternal"] as string;
-						var defId = ( int )System.Convert.ChangeType( def["Id"], typeof( int ) );
-						defsByName[defName] = def;
-						defsById[defId] = def;
-						loadedDefs.Add( defId.ToString( "00000" ) + " " + defFile + "/" + defName );
-					}
-				}
-				catch ( System.Exception e ) {
-					Debug.LogError( defFile );
-					Debug.LogError( e );
-				}
-			}));
-		}
-	}
+    public IEnumerator LoadDefinitions ( System.Action onDone ) {
+        foreach ( var defFile in defFiles ) {
+            yield return StartCoroutine( Requestor.ForJSON( path + "/" + defFile + ".json", ( json ) => {
+                try {
+                    var defs = ( List<object> )MiniJSON.Json.Deserialize( json );
+                    foreach ( Dictionary<string, object> def in defs ) {
+                        var defName = def["NameInternal"] as string;
+                        var defId = ( int )System.Convert.ChangeType( def["Id"], typeof( int ) );
+                        defsByName[defName] = def;
+                        defsById[defId] = def;
+                        loadedDefs.Add( defId.ToString( "00000" ) + " " + defFile + "/" + defName );
+                    }
+                } catch ( System.Exception e ) {
+                    Debug.LogError( defFile );
+                    Debug.LogError( e );
+                }
+            } ) );
+        }
+        onDone();
+        //StartCoroutine( LoadBlocks( "http://dl.dropboxusercontent.com/u/10592653/eve/UnitTestBlocks.json" ) );
+        //StartCoroutine( LoadMission( "Normandy, Alaska" ) );
 
-	string[] defFiles = {
-		//"AdsConfiguration",
-		"AmmoDefinitions",
-		//"AnimationSetDefinitions",
-		//"AwaitDropDefinitions",
-		"BuildingDefinitions",
-		//"CameraCustomizationConfig",
-		//"CameraOrthoConfig",
-		//"CameraPerspectiveConfig",
-		//"DefenseBuildingDefinitions",
-		"HeroDefinitions",
-		//"HeroSlotDefinitions",
-		//"HeroTree",
-		//"InAppProductDefinitions",
-		"MissionDefinitions",
-		//"QuestDefinitions",
-		//"RepairPurchaseDefinition",
-		//"SupplyDropDefinitions",
-		//"TrapDefinitions",
-		//"UnitDefinitions",
-		//"UpgradeDefinitions",
-		//"UpgradeTree",
-		//"UserDefinition",
-		"WallDefinitions",
-		//"WarCacheDefinitions",
-		//"WeaponDefinitions",
-		//"WorldMapObjectDefinitions",
-	};
-	
+        // Normandy, Alaska
+    }
+
+    string[] defFiles = {
+        //"AdsConfiguration",
+        //"AmmoDefinitions",
+        //"AnimationSetDefinitions",
+        //"AwaitDropDefinitions",
+        "BuildingDefinitions",
+        //"CameraCustomizationConfig",
+        //"CameraOrthoConfig",
+        //"CameraPerspectiveConfig",
+        //"DefenseBuildingDefinitions",
+        //"HeroDefinitions",
+        //"HeroSlotDefinitions",
+        //"HeroTree",
+        //"InAppProductDefinitions",
+        "MissionDefinitions",
+        //"QuestDefinitions",
+        //"RepairPurchaseDefinition",
+        //"SupplyDropDefinitions",
+        //"TrapDefinitions",
+        //"UnitDefinitions",
+        //"UpgradeDefinitions",
+        //"UpgradeTree",
+        //"UserDefinition",
+        "WallDefinitions",
+        //"WarCacheDefinitions",
+        //"WeaponDefinitions",
+        //"WorldMapObjectDefinitions",
+    };
+
+
+    public IEnumerator LoadBlocks ( string url ) {
+        yield return StartCoroutine( Requestor.ForJSON( url, ( json ) => {
+            var obj = MiniJSON.Json.Deserialize( json );
+            Dynamic.For<Dictionary<string, object>>( obj, blockTypes => {
+                var createdBlocks = new List<Blocks.Block>();
+                foreach ( var blockType in blockTypes.Keys ) {
+                    Dynamic.For<Dictionary<string, object>>( blockTypes[blockType], blocks => {
+                        foreach ( var blockId in blocks.Keys ) {
+                            Dynamic.For<Dictionary<string, object>>( blocks[blockId], record => {
+                                var entityId = record["entity"] as string;
+                                var entity = GameObject.Find( entityId ) as GameObject;
+                                if ( entity == null ) {
+                                    entity = new GameObject( entityId );
+                                }
+                                var block = entity.AddComponent( blockType as string ) as Blocks.Block;
+                                createdBlocks.Add( block );
+                                block.OnDataBind();
+                                block.OnSource( blockId as string, record );
+                            } );
+                        }
+                    } );
+                }
+                foreach ( var createdBlock in createdBlocks ) {
+                    createdBlock.OnSetup();
+                }
+            } );
+        } ) );
+    }
+
+    public IEnumerator LoadMission ( string mission, System.Action onDone ) {
+
+        var missionDef  = ( Dictionary<string, object> )defsByName[mission];
+
+        var wallsPath = missionDef["WallInstancePath"] as string;
+        //Debug.Log( wallsPath );
+
+        string baseUrl = "http://dl.dropboxusercontent.com/u/10592653/eve";
+
+        yield return StartCoroutine( Requestor.ForJSON( baseUrl + "/" + wallsPath + ".json", ( json ) => {
+
+            var wallDefs = MiniJSON.Json.Deserialize( json );
+            foreach ( Dictionary<string, object> wallDef in ( List<object> )wallDefs ) {
+                Debug.Log( Def.Value<int>( wallDef["Level"], 0 ) );
+
+                var wallObject = new GameObject( Def.Value<string>( wallDef["InstanceId"], "BadInstance" ) );
+                var healthBlock = wallObject.AddComponent<Blocks.Health>();
+                healthBlock.OnDataBind();
+                var levelBlock = wallObject.AddComponent<Blocks.Level>();
+                levelBlock.OnDataBind();
+                var wallBlock = wallObject.AddComponent<Blocks.WallStructure>();
+                wallBlock.OnDataBind();
+
+                wallBlock.xPos.Set( Def.Value<int>( wallDef["X"], 0 ) );
+                wallBlock.yPos.Set( Def.Value<int>( wallDef["Y"], 0 ) );
+                wallBlock.zPos.Set( Def.Value<int>( wallDef["Z"], 0 ) );
+
+                levelBlock.level.Set( Def.Value<int>( wallDef["Level"], 1 ) );
+
+                healthBlock.OnSetup();
+                levelBlock.OnSetup();
+                wallBlock.OnSetup();
+
+                wallBlock.OnLoad();
+            }
+
+        } ) );
+
+        onDone();
+    }
+
 }
 
 public class Def {
 
-	Dictionary<string,object> defsByName;
+    Dictionary<string, object> defsByName;
 
-	public Def () {
-		defsByName = Definitions.Get().defsByName;
-	}
+    public Def () {
+        defsByName = Definitions.Get().defsByName;
+    }
 
-	public Def ( Dictionary<string,object> defs ) {
-		defsByName = defs;
-	}
+    public Def ( Dictionary<string, object> defs ) {
+        defsByName = defs;
+    }
 
-	public IEnumerable<T> Values< T > ( string defName, string defKey ) {
-		try {
-			var def = ( Dictionary<string,object> )( defsByName[defName] );
-			var objects = ( ( List<object> )( def[defKey] ) );
-			var values = objects.Select( obj => (T)System.Convert.ChangeType( obj, typeof( T ) ) );
-			values.FirstOrDefault();
-			return values;
-		}
-		catch ( System.Exception e ) {
-			Debug.LogError( defName );
-			Debug.LogError( defKey );
-		}
-		return new List<T>();
-	}
+    public IEnumerable<T> Values<T> ( string defName, string defKey ) {
+        try {
+            var def = ( Dictionary<string, object> )( defsByName[defName] );
+            var objects = ( ( List<object> )( def[defKey] ) );
+            var values = objects.Select( obj => ( T )System.Convert.ChangeType( obj, typeof( T ) ) );
+            values.FirstOrDefault();
+            return values;
+        } catch ( System.Exception e ) {
+            Debug.LogError( defName );
+            Debug.LogError( defKey );
+            Debug.LogError( e );
+        }
+        return new List<T>();
+    }
 
-	public T Value< T > ( string defName, string defKey, T defValue ) {
-		try {
-			var def = ( Dictionary<string,object> )( defsByName[defName] );
-			var value = (T)System.Convert.ChangeType( def[defKey], typeof( T ) );;
-			return value;
-		}
-		catch ( System.Exception e ) {
-			Debug.LogError( defName );
-			Debug.LogError( defKey );
-		}
-		return defValue;
-	}
+    public T Value<T> ( string defName, string defKey, T defValue ) {
+        try {
+            var def = ( Dictionary<string, object> )( defsByName[defName] );
+            var value = ( T )System.Convert.ChangeType( def[defKey], typeof( T ) );
+            return value;
+        } catch ( System.Exception e ) {
+            Debug.LogError( defName );
+            Debug.LogError( defKey );
+            Debug.LogError( e );
+        }
+        return defValue;
+    }
+
+    public static T Value<T> ( object value, T defValue ) {
+        try {
+            return ( T )System.Convert.ChangeType( value, typeof( T ) );
+        } catch ( System.Exception e ) {
+            Debug.LogError( e );
+        }
+        return defValue;
+    }
 
 }
 

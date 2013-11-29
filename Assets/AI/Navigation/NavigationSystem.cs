@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------------------------------------------------   
+//---------------------------------------------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +7,43 @@ using Blocks;
 //---------------------------------------------------------------------------------------------------------------------
 // the public interface to everything navigation
 public class NavigationSystem {
+
+    static NavigationSystem instance;
+
+    public static NavigationSystem Get () {
+        if ( instance != null ) {
+            return instance;
+        } else {
+            AnnotatedNode[,] annotatedNodes = new AnnotatedNode[SpaceConversion.MapTiles + 1, SpaceConversion.MapTiles + 1];
+            for ( int i = 0; i < SpaceConversion.MapTiles + 1; i++ ) {
+                for ( int j = 0; j < SpaceConversion.MapTiles + 1; j++ ) {
+                    annotatedNodes[i, j] = new AnnotatedNode();
+                }
+            }
+
+            UnitTracker unitTracker = new UnitTracker();
+
+            AStar solver = new AStar( annotatedNodes, unitTracker );
+            DirectionalAStar solverDirectional = new DirectionalAStar( annotatedNodes );
+
+            int maxAStarsNodesExploredPerFrame = 500;
+            AStarScheduler aStarScheduler = new AStarScheduler( solver, solverDirectional, maxAStarsNodesExploredPerFrame );
+
+            int [,] baseOutlineStructureIds = new int[SpaceConversion.MapTiles, SpaceConversion.MapTiles];
+            ClearanceMap clearanceMap = new ClearanceMap( annotatedNodes, baseOutlineStructureIds );
+            CostMap costMap = new CostMap( annotatedNodes );
+
+            instance =  new NavigationSystem(
+                clearanceMap,
+                costMap,
+                aStarScheduler,
+                unitTracker,
+                annotatedNodes,
+                baseOutlineStructureIds );
+            return instance;
+        }
+    }
+
     //---------------------------------------------------------------------------------------------------------------------
     public NavigationSystem (
         ClearanceMap clearanceMap,
@@ -21,7 +58,7 @@ public class NavigationSystem {
         m_unitTracker = unitTracker;
         AnnotatedNodes = annotatedNodes;
         BaseOutlineStructureIds = baseOutlineStructureIds;
-		
+
         // create a dummy first object that will weight new building creation towards the center of the map
         m_totalObjects = 1;
         m_baseTotalXPositions = ( int )( SpaceConversion.MapTiles / 2.0f );
@@ -45,7 +82,7 @@ public class NavigationSystem {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void DebugDraw () {
-//        m_clearanceMap.DebugDraw();
+        //        m_clearanceMap.DebugDraw();
         m_costMap.DebugDraw();
     }
     //---------------------------------------------------------------------------------------------------------------------
@@ -55,18 +92,18 @@ public class NavigationSystem {
     //---------------------------------------------------------------------------------------------------------------------
     public void OnModelChanged ( object sender, EventArgs e ) {
         //TODO:Reimplement events
-//    PositionChangedEventArgs sp = e as PositionChangedEventArgs;
-//    if (sp != null && sp.IsBlocked == false)
-//    {
-//      Structure model = sender as Structure;
-//      UpdateGameModelPosition(sp.PrevPosition, sp.Position, model);
-//    }
-//
-//    StructureSelectedEventArgs ss = e as StructureSelectedEventArgs;
-//    if (ss != null && ss.selected == false)
-//    {
-//      m_clearanceMap.RecalulateBaseOutline();
-//    }
+        //    PositionChangedEventArgs sp = e as PositionChangedEventArgs;
+        //    if (sp != null && sp.IsBlocked == false)
+        //    {
+        //      Structure model = sender as Structure;
+        //      UpdateGameModelPosition(sp.PrevPosition, sp.Position, model);
+        //    }
+        //
+        //    StructureSelectedEventArgs ss = e as StructureSelectedEventArgs;
+        //    if (ss != null && ss.selected == false)
+        //    {
+        //      m_clearanceMap.RecalulateBaseOutline();
+        //    }
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void OnAttach ( object sender ) {
@@ -120,7 +157,7 @@ public class NavigationSystem {
         m_baseTotalZPositions += z;
     }
 
-    public void UpdateDPSInCostMap ( Cannon cannon, PathFindingNode node) {
+    public void UpdateDPSInCostMap ( Cannon cannon, PathFindingNode node ) {
         m_costMap.AddToDPS( cannon, node );
     }
     //---------------------------------------------------------------------------------------------------------------------
@@ -129,12 +166,12 @@ public class NavigationSystem {
         SpaceConversion.GetMapTileFromWorldPosition( previous, out prevX, out prevZ );
         int x, z;
         SpaceConversion.GetMapTileFromWorldPosition( current, out x, out z );
-    Debug.Log (x + " "+ z);
+        Debug.Log ( x + " " + z );
         m_clearanceMap.UpdateGameModel( prevX, prevZ, x, z, node );
 
         var trap = node.GetComponent<Trap>();
 
-        if ( trap == default(Trap) ) {
+        if ( trap == default( Trap ) ) {
             m_costMap.RemoveStructure( previous, node );
             m_costMap.AddStructure( node );
         }
@@ -187,9 +224,15 @@ public class NavigationSystem {
         m_unitTracker.UnRegisterUnitGoingToTile( instanceId );
     }
     //---------------------------------------------------------------------------------------------------------------------
-    public AnnotatedNode[,] AnnotatedNodes { get; private set; }
+    public AnnotatedNode[,] AnnotatedNodes {
+        get;
+        private set;
+    }
 
-    public int [,] BaseOutlineStructureIds { get; private set; }
+    public int [,] BaseOutlineStructureIds {
+        get;
+        private set;
+    }
     //---------------------------------------------------------------------------------------------------------------------
     private ClearanceMap m_clearanceMap;
     private CostMap m_costMap;

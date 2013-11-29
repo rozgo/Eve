@@ -39,7 +39,7 @@ public class Table {
 
     public string name = string.Empty;
     public List<string> columns = new List<string>();
-    public Dictionary<string,Record> records = new Dictionary<string,Record>();
+    public Dictionary<string, Record> records = new Dictionary<string, Record>();
 }
 
 [System.Serializable]
@@ -75,7 +75,7 @@ public class Field {
         }
 
         public T Get<T> () {
-            return (T)System.Convert.ChangeType( value, typeof( T ) );
+            return ( T )System.Convert.ChangeType( value, typeof( T ) );
         }
 
         public override string Encode () {
@@ -121,21 +121,21 @@ class Dynamic {
 
     public static bool IsNumber ( object value ) {
         return value is sbyte
-                || value is byte
-                || value is short
-                || value is ushort
-                || value is int
-                || value is uint
-                || value is long
-                || value is ulong
-                || value is float
-                || value is double
-                || value is decimal;
+               || value is byte
+               || value is short
+               || value is ushort
+               || value is int
+               || value is uint
+               || value is long
+               || value is ulong
+               || value is float
+               || value is double
+               || value is decimal;
     }
 
     public static void ForValue<T> ( object value, System.Action<T> action ) where T : struct {
         if ( IsNumber( value ) ) {
-            action( (T)System.Convert.ChangeType( value, typeof( T ) ) );
+            action( ( T )System.Convert.ChangeType( value, typeof( T ) ) );
         }
     }
 
