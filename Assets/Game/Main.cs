@@ -4,12 +4,15 @@ using System.Collections;
 public class Main : MonoBehaviour {
     // Use this for initialization
     void Start () {
-        Instantiator.Instantiate( "Common/SharedShaders", "Environment", null, null );
-        Instantiator.Instantiate( "HomeScene/Environment", "Environment", null, null );
+        gameStateMachine = new GameStateMachine ();
+        Object.DontDestroyOnLoad (gameObject);
+    }
 
-    }
-    // Update is called once per frame
     void Update () {
-	
+      gameStateMachine.Update (Time.deltaTime);
     }
+
+
+  private GameStateMachine gameStateMachine;
+  public GameObject instantiator;
 }

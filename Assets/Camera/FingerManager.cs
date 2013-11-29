@@ -16,7 +16,6 @@ public class FingerManager : MonoBehaviour {
     string scrollAxisName = "Mouse ScrollWheel";
 
     void FingerBegin ( TouchData evt ) {
-        Debug.Log( "finger begin" );
         touchHits[ evt.fingerId ].Collider = null;
         Ray ray = camera.ScreenPointToRay( evt.position );
         RaycastHit hit;

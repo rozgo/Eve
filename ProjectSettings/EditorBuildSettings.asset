@@ -7,3 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/CameraScene.unity
+  - enabled: 1
+    path: Assets/Scenes/HomeScene.unity
+  - enabled: 1
+    path: Assets/Scenes/StartScene.unity

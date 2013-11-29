@@ -11,7 +11,6 @@ public class PerspectiveCameraInputListener : ICameraInputListener {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void OnPress ( bool isDown, FingerManager.TouchHit touchHit ) {
-        Debug.Log( "on press " + isDown );
         if ( Input.touchCount > 1 ) {
             return;
         }

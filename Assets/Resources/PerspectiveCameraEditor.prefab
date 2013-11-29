@@ -25,6 +25,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400002}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400008}
+  - 114: {fileID: 11400010}
   m_Layer: 0
   m_Name: PerspectiveCameraEditor
   m_TagString: Untagged
@@ -85,8 +87,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: .353553414, y: .353553414, z: -.14644663, w: .853553355}
-  m_LocalPosition: {x: 0, y: 49.0731354, z: 0}
+  m_LocalRotation: {x: .353553444, y: .353553414, z: -.146446645, w: .853553355}
+  m_LocalPosition: {x: -27.2689667, y: 64.9457703, z: -27.2449837}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400002}
@@ -111,8 +113,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_LocalRotation: {x: .403854609, y: .430031359, z: -.223860264, w: .775797129}
-  m_LocalPosition: {x: -.340897083, y: 47.466362, z: -7.08552551}
+  m_LocalRotation: {x: .485944659, y: .403092623, z: -.269363552, w: .727198362}
+  m_LocalPosition: {x: -.340897083, y: 20.5984726, z: -7.08552551}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400002}
@@ -166,10 +168,10 @@ MonoBehaviour:
   lowerLimit: {fileID: 11400004}
   m_lookAtLimits:
     m_Center: {x: 70, y: 0, z: 70}
-    m_Extent: {x: 125, y: .5, z: 125}
+    m_Extent: {x: 140, y: .5, z: 140}
   m_lookAtLimitsZoomIn:
-    m_Center: {x: 70, y: 0, z: 70}
-    m_Extent: {x: 75, y: 1.5, z: 75}
+    m_Center: {x: 50, y: 0, z: 50}
+    m_Extent: {x: 105, y: 1.5, z: 105}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -194,6 +196,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fov: 60
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1065be6f054d24539ba5f1269c81248e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_sceneConfiguration: {fileID: 11400002}
+  m_cameraInputHandler: {fileID: 11400010}
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93ea821d889040e1ba3d8925de7bf94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

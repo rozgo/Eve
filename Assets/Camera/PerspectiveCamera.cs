@@ -10,17 +10,14 @@ using System.Linq;
 public class PerspectiveCamera : MonoBehaviour {
     public void Start () {
 
- 
-        PerspectiveCameraInputListener listener = new PerspectiveCameraInputListener( this );
-        m_cameraInputHandler.listeners.Add( listener );
-
-     
         m_lookAtLimits = m_sceneConfiguration.m_lookAtLimits;
         m_lookAtLimitsZoomIn = m_sceneConfiguration.m_lookAtLimitsZoomIn;
 
         m_minHeight = m_sceneConfiguration.lowerLimit.transform.position.y;
         m_maxHeight = m_sceneConfiguration.upperLimit.transform.position.y * 0.6f; // TODO remove the *0.6 - a temp fixup until we get a bigger environment
 
+
+        Eye ().transform.position = m_sceneConfiguration.gameCamera.transform.position;
         m_lookAt = new Vector3( 20, 0, 20 );
         /*
     [
@@ -57,9 +54,6 @@ public class PerspectiveCamera : MonoBehaviour {
     ]
 
 */
-
-
-
   
 
         eyeCtrl.kp = 16f; //configurationByPlatform.EyeCtrlKp;
@@ -109,7 +103,6 @@ public class PerspectiveCamera : MonoBehaviour {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void DoSelection () {
-        Debug.Log( "do selection" );
         if ( m_zooming == 0 ) {
             m_lookAtAnchor = ScreenToGroundFromScreenPoint( touchPosition() );
             m_dragging = 1;
@@ -117,7 +110,6 @@ public class PerspectiveCamera : MonoBehaviour {
             m_fingerSpeed = Vector3.zero;
             onDrag = (float dt ) => {
                 var groundPos = ScreenToGroundFromScreenPoint( touchPosition() );
-                Debug.Log( "drag selection" );
                 var viewPortPoint = Eye().WorldToViewportPoint( groundPos ); 
                 // low pass filter.
                 m_fingerSpeed = Vector3.Lerp( m_fingerSpeed, ( m_lastFingerPosition - viewPortPoint ) / dt, 0.75f );
@@ -135,7 +127,6 @@ public class PerspectiveCamera : MonoBehaviour {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void OnPressFinished () {
-        Debug.Log( "on press finished" );
         m_dragging = 0;
     }
     //---------------------------------------------------------------------------------------------------------------------

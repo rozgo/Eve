@@ -3,10 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class CameraInputHandler : MonoBehaviour {
+
+
+
+
     public List<ICameraInputListener> listeners = new List<ICameraInputListener>();
+
+
+  //---------------------------------------------------------------------------------------------------------------------
+  void Start(){
+    Camera.main.GetComponent<FingerManager> ().touchListener = gameObject;
+
+    var perspectiveCamera =  GetComponent<PerspectiveCamera> ();
+    PerspectiveCameraInputListener listener = new PerspectiveCameraInputListener( perspectiveCamera );
+    listeners.Add( listener );
+
+  }
+
     //---------------------------------------------------------------------------------------------------------------------
     public void OnFingerBegin ( FingerManager.TouchHit touchHit ) {
-        Debug.Log( "on finger begin-------" );
         m_isPotentialClick = true;
 
         for ( int i = 0; i < listeners.Count; i++ ) {
