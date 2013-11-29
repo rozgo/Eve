@@ -10,6 +10,7 @@ public class Definitions : MonoBehaviour {
 		if ( instance == null ) {
 			var defObj = new GameObject( "Definitions" );
 			defObj.AddComponent<Definitions>();
+			Object.DontDestroyOnLoad( defObj );
 		}
 		return instance;
 	}
