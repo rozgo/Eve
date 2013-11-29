@@ -87,12 +87,7 @@ class Instantiator : MonoBehaviour {
                 //r.material.name += "(shared)";
             }
 
-
-
         }
-
-
-
 
         Profiler.EndSample();
         return go;

@@ -40,14 +40,14 @@ public class GotoBiped : Goto {
     public override void Go (
         Vector3 destination, 
         float withinRangeDistance, 
-        PathFindingNode targetModel,
+        Health target,
         Hero heroToAvoid, 
         Action<List<PathFindingNode>, 
         LinkedListNode<FinalPathNode>> pathFoundCallBack ) {
             m_pathFindingInput.HeuristicMultiplier = 1.5f;
             m_pathFindingInput.PostProcessStraighten = true;
             m_pathFindingInput.TeamId = m_teamId;
-            m_pathFindingInput.TargetModel = targetModel;
+            m_pathFindingInput.Target = target;
             m_pathFindingInput.HeroToAvoid = heroToAvoid;
             m_pathFindingInput.CanDestroyBlockingBuildings = false;
             m_pathFindingInput.CanDestroyBlockingWalls = true;

@@ -82,14 +82,16 @@ public abstract class AStarBase {
             bool isEndNode = ( node.X == m_input.TargetTileX && node.Z == m_input.TargetTileZ );
 
             if ( m_input.StopWithinDistanceFromTargetModel > 0 &&
-            m_input.TargetModel != null &&
-            ( m_input.TargetModel is Structure || m_input.TargetModel is Hero ) ) {
+            m_input.Target != null &&
+                ( m_input.Target.GetComponent<Structure>() != default(Structure) || m_input.Target.GetComponent<Hero>() != default(Hero) ) ) {
                 // convert the map tile location to the world position, adjusting for the clearance map offset 
                 // TODO function naming is confusing here
                 Vector3 clearanceMapPos = SpaceConversion.GetWorldPositionFromMapTile( node.X, node.Z );
                 Vector3 worldPos = SpaceConversion.GetWorldPositionFromClearanceMapPosition( clearanceMapPos, m_input.UnitTileWidth );
 
-                bool inRange = PathHelper.IsWithinRange( m_input.StopWithinDistanceFromTargetModel, worldPos.x, worldPos.z, m_input.TargetModel );
+                var targetNode = m_input.Target.GetComponent<PathFindingNode>();
+
+                bool inRange = PathHelper.IsWithinRange( m_input.StopWithinDistanceFromTargetModel, worldPos.x, worldPos.z, targetNode );
 
                 if ( inRange ) {
                     if ( m_input.IgnoreOthersOccupyingSquare ) { // some units don't care about spreading out when attacking
@@ -327,9 +329,10 @@ public abstract class AStarBase {
 
                 // check that this is still a valid position
                 if ( m_input.StopWithinDistanceFromTargetModel > 0 &&
-                m_input.TargetModel != null &&
-                ( m_input.TargetModel is Structure || m_input.TargetModel is Hero ) ) {
-                    bool inRange = PathHelper.IsWithinRange( m_input.StopWithinDistanceFromTargetModel, adjustedPosition.x, adjustedPosition.z, m_input.TargetModel );
+                m_input.Target != null &&
+                    ( m_input.Target.GetComponent<Structure>() != default(Structure) || m_input.Target.GetComponent<Hero>() != default(Hero) ) ) {
+                    var targetNode = m_input.Target.GetComponent<PathFindingNode>();
+                    bool inRange = PathHelper.IsWithinRange( m_input.StopWithinDistanceFromTargetModel, adjustedPosition.x, adjustedPosition.z, targetNode );
 
                     if ( inRange ) {
                         position = adjustedPosition;

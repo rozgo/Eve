@@ -50,7 +50,7 @@ public abstract class Goto {
     public abstract void Go (
         Vector3 destination, 
         float withinRangeDistance, 
-        PathFindingNode targetModel, 
+        Health target,
         Hero heroToAvoid, 
         Action<List<PathFindingNode>, LinkedListNode<FinalPathNode>> callBack );
     //---------------------------------------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ public abstract class Goto {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void RePath () {
-        Go( m_pathFindingOutputPending.Destination, m_pathFindingInput.StopWithinDistanceFromTargetModel, m_pathFindingInput.TargetModel, m_pathFindingInput.HeroToAvoid, m_pathFoundCallBack );
+        Go( m_pathFindingOutputPending.Destination, m_pathFindingInput.StopWithinDistanceFromTargetModel, m_pathFindingInput.Target, m_pathFindingInput.HeroToAvoid, m_pathFoundCallBack );
     }
     //---------------------------------------------------------------------------------------------------------------------
     protected virtual void AStarCompleteCallback () {

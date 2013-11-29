@@ -39,13 +39,13 @@ public class GotoVehicle : Goto {
     public override void Go (
         Vector3 destination,
         float withinRangeDistance,
-        PathFindingNode targetModel,
+        Health target,
         Hero heroToAvoid, // ignored
         Action<List<PathFindingNode>, LinkedListNode<FinalPathNode>> pathFoundCallBack ) {
             SearchPriorityLevel priority = SearchPriorityLevel.Normal;
             m_pathFindingInput.UnitTileWidth = m_tileWidth;
             m_pathFindingInput.UnitTileLength = m_tileLength;
-            m_pathFindingInput.TargetModel = targetModel;
+            m_pathFindingInput.Target = target;
             m_pathFindingInput.StopWithinDistanceFromTargetModel = withinRangeDistance;
 
             // time to turn 360 degrees

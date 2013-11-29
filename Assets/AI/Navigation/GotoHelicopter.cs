@@ -41,7 +41,7 @@ public class GotoHelicopter : Goto {
     public override void Go (
         Vector3 destination, 
         float withinRangeDistance, 
-        PathFindingNode targetModel, 
+        Health target, 
         Hero heroToAvoid,
         Action<List<PathFindingNode>,
         LinkedListNode<FinalPathNode>> pathFoundCallBack ) {
@@ -101,7 +101,8 @@ public class GotoHelicopter : Goto {
             Vector3 desired = m_destination - m_aiComms.Position;
             Weapon weapon = m_weapons[ 0 ];
             if ( weapon.Target != null ) {
-                desired = weapon.Target.Center - m_aiComms.Position;
+                var targetNode = weapon.Target.GetComponent<PathFindingNode>();
+                desired = targetNode.Center - m_aiComms.Position;
             }
 
             desired.y = 0;
