@@ -39,7 +39,7 @@ public class GotoBlimp : Goto {
     public override void Go (
         Vector3 destination,
         float withinRangeDistance,
-        PathFindingNode targetModel,
+        Health target,
         Hero heroToAvoid,
         Action<List<PathFindingNode>,
         LinkedListNode<FinalPathNode>> pathFoundCallBack ) {

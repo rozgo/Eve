@@ -60,7 +60,7 @@ public class PathFindingInput {
 
     public uint TeamId { get; set; }
 
-    public PathFindingNode TargetModel { get; set; }
+    public Health Target { get; set; }
 
     public Hero HeroToAvoid { get; set; }
     // 1 or less will give the shortest path, more than 1 may produce a non optimal path but will be faster to calulcate
