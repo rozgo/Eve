@@ -197,20 +197,17 @@ public class HomeLoadStructuresState : IState
     //Buildings/NuclearPowerPlant_L5
     //Buildings/Wall_L1
     var building = Instantiator.Instantiate ("Buildings/NuclearPowerPlant_L5","nuclear stuff",null,null,null);
-    var buildingPathfindingNode = building.AddComponent<PathFindingNode> ();
-    buildingPathfindingNode.TileWidth = 3;
-    buildingPathfindingNode.TileLength = 3;
-    buildingPathfindingNode.Width = 1;
-    buildingPathfindingNode.Length = 1;
-
+    var buildingPathfindingNode = building.AddComponent<PathFindingNode>();
+    buildingPathfindingNode.Width = 3;
+    buildingPathfindingNode.Length = 3;
     var pos = new Vector3(40f,0f,40f);
-    building.transform.position = pos;
-    building.AddComponent<Structure> ();
     buildingPathfindingNode.Position = pos;
+    building.transform.position = pos + new Vector3(3 * 0.5f * SpaceConversion.MapTileSize, 0, 3 * 0.5f * SpaceConversion.MapTileSize);
+    building.AddComponent<Structure>();
 
     homeSceneStateMachine.navigationSystem.AddGameModel (buildingPathfindingNode);
 
-    homeSceneStateMachine.navigationSystem.UpdateGameModelPosition (pos, pos, buildingPathfindingNode);
+//    homeSceneStateMachine.navigationSystem.UpdateGameModelPosition (pos, pos, buildingPathfindingNode);
 //    for(int i = 0;i<40;i++){
 //      for (int j = 0; j < 40; j++) {
 //        var pos = SpaceConversion.GetWorldPositionFromMapTile (i,j);
@@ -393,7 +390,6 @@ public class HomeUpdateStuffState : IState
 
   public void Update (float deltaTime)
   {
-    Debug.Log ("Updating");
     homeSceneStateMachine.navigationSystem.Update (deltaTime);
   }
 

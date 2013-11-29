@@ -13,7 +13,15 @@ namespace Blocks {
         public Vector3 Position;
         public uint Width;
         public uint Length;
-        public Vector3 Center;
         public float DamageDoneToMePerSecond;
+        public Vector3 Center {
+            get {
+                return new Vector3(
+                    Position.x + Width * SpaceConversion.MapTileSize * 0.5f,
+                    0,
+                    Position.z + Length * SpaceConversion.MapTileSize * 0.5f
+                );
+            }
+        }
     }
 }

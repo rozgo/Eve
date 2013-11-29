@@ -45,8 +45,7 @@ public class NavigationSystem {
     }
     //---------------------------------------------------------------------------------------------------------------------
     public void DebugDraw () {
-    Debug.Log ("se esta llamando eso ");
-        m_clearanceMap.DebugDraw();
+//        m_clearanceMap.DebugDraw();
         m_costMap.DebugDraw();
     }
     //---------------------------------------------------------------------------------------------------------------------
